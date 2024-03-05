@@ -5,22 +5,51 @@ import './App.css';
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+
+     <form>
+      <p>Income Sources</p>
+    <input type='text' placeholder='Salary' />
+    <p>Amount of income</p>
+    <input type='text' placeholder='' />
+<p>Date of income</p>
+   <input type='date' />
+      <button className='btn add-incoming'>Add Incoming</button>
+     </form>
+
+
+     <form>
+      <p>Expense Sources</p>
+      <input type='text' placeholder='Electric bill' />
+      <p>Amount of expense</p>
+     <input type='text' placeholder='' />
+
+
+     <p>Date of expense</p>
+   <input type='date' />
+      <button className='btn add-expense'>Add Expense</button>
+     </form>
+
+
+     <form>
+      <p>Target Saving</p>
+      <input type='text' placeholder='' />
+
+
+      <button>Reset</button>
+     </form>
+
+
+
+     <form>
+      <p>Saving Amount</p>
+      <input type='text' placeholder='' />
+
+
+      <button>Enter</button>
+     </form>
+
     </div>
-  );
+  )
 }
 
 export default App;
