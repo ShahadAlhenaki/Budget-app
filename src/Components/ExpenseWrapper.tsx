@@ -1,17 +1,16 @@
 import React from 'react';
 import { useState } from "react"
-import { IncomeForm } from "./IncomeForm"
+import { ExpenseForm } from "./ExpenseForm"
 
-type Income = {
+type Expense = {
     source: string,
     amount: number,
     date: string
   }
   
+export function ExpenseWrapper(){
 
-export function IncomeWrapper(){
-
-const [incomes, setIncomes] = useState<Income[]>([])
+const [expenses, setExpenses] = useState<Expense[]>([])
 const [source, setSource] = useState ('')
 const [amount, setAmount] = useState (0)
 // const [date, setDate] = useState (null)
@@ -28,28 +27,28 @@ const handleChangeAmount = (e) => {
 const handleSubmint = (e) => {
   e.preventDefault()
 
-const newIncome = {
+const newExpense = {
   source: source,
   amount:amount,
   date: new Date().toLocaleDateString()
 }
-setIncomes([...incomes, newIncome])
+setExpenses([...expenses, newExpense])
 }
+
 return(
 <>
-<IncomeForm 
-  handleChangeSource={handleChangeSource} 
-  handleChangeAmount={handleChangeAmount} 
+<ExpenseForm handleChangeSource={handleChangeSource}
+  handleChangeAmount={handleChangeAmount}
   handleSubmint={handleSubmint} />
-
+  
 <ul>
   {
-    incomes.map(income => {
+    expenses.map(expense => {
       return(
         <li>
-         <p>{income.source}</p> 
-         <p>{income.amount}</p>
-         <p>{income.date}</p>
+         <p>{expense.source}</p> 
+         <p>{expense.amount}</p>
+         <p>{expense.date}</p>
         </li>
       )
     })}
