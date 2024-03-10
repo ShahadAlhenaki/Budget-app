@@ -1,18 +1,16 @@
 import React from "react";
 import { useState } from "react";
-import { ExpenseForm } from "./ExpenseForm";
+import { TargetSavingForm } from "./TargetSavingForm";
 
-type Expense = {
+type TargetSaving = {
   source: string;
   amount: number;
-  date: string;
 };
 
-export function ExpenseWrapper() {
-  const [expenses, setExpenses] = useState<Expense[]>([]);
+export function TargetSavingWrapper() {
+  const [TargetSavings, setTargetSavings] = useState<TargetSaving[]>([]);
   const [source, setSource] = useState("");
   const [amount, setAmount] = useState(0);
-  // const [date, setDate] = useState (null)
 
   const handleChangeSource = (e) => {
     const value = e.target.value;
@@ -26,29 +24,28 @@ export function ExpenseWrapper() {
   const handleSubmint = (e) => {
     e.preventDefault();
 
-    const newExpense = {
+    const newTargetSaving = {
       source: source,
       amount: amount,
       date: new Date().toLocaleDateString(),
     };
-    setExpenses([...expenses, newExpense]);
+    setTargetSavings([...TargetSavings, newTargetSaving]);
   };
 
   return (
     <>
-      <ExpenseForm
+      <TargetSavingForm
         handleChangeSource={handleChangeSource}
         handleChangeAmount={handleChangeAmount}
         handleSubmint={handleSubmint}
       />
 
       <ul>
-        {expenses.map((expense) => {
+        {TargetSavings.map((TargetSaving) => {
           return (
             <li>
-              <p>{expense.source}</p>
-              <p>{expense.amount}</p>
-              <p>{expense.date}</p>
+              <p>{TargetSaving.source}</p>
+              <p>{TargetSaving.amount}</p>
             </li>
           );
         })}

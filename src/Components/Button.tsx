@@ -1,3 +1,3 @@
-export function Button ({label}){
-    return <button className='btn'>{label}</button>
+export function Button({ label }) {
+  return <button className="btn">{label}</button>;
 }

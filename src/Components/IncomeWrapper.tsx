@@ -35,6 +35,8 @@ const newIncome = {
 }
 setIncomes([...incomes, newIncome])
 }
+
+
 return(
 <>
 <IncomeForm 
