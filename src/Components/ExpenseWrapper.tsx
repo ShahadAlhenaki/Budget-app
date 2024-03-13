@@ -1,58 +1,77 @@
-import React from "react";
-import { useState } from "react";
-import { ExpenseForm } from "./ExpenseForm";
+import { ChangeEvent, FormEvent, useState } from "react";
 
-type Expense = {
+import { Form } from "./Form";
+import { ListItems } from "./ListItems";
+
+export type Expense = {
+  id: number;
   source: string;
   amount: number;
   date: string;
 };
 
-export function ExpenseWrapper() {
-  const [expenses, setExpenses] = useState<Expense[]>([]);
-  const [source, setSource] = useState("");
-  const [amount, setAmount] = useState(0);
-  // const [date, setDate] = useState (null)
+const EXPENSE_INPUTS = [
+  {
+    name: "source",
+    id: "source",
+    label: "Expense Source",
+  },
+  {
+    name: "amount",
+    id: "amount",
+    label: "Expense Amount",
+  },
+];
 
-  const handleChangeSource = (e) => {
-    const value = e.target.value;
-    setSource(value);
-  };
-  const handleChangeAmount = (e) => {
-    const value = e.target.value;
-    setAmount(value);
+type ExpenseWrapperProps = {
+  expenses: Expense[];
+  setExpenses: (key: Expense[]) => void;
+};
+
+export function ExpenseWrapper({ expenses, setExpenses }: ExpenseWrapperProps) {
+  const [expense, setExpense] = useState<Expense>({
+    id: +new Date(),
+    source: "",
+    amount: 0,
+    date: new Date().toLocaleDateString(),
+  });
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setExpense({
+      ...expense,
+      [name]: value,
+    });
   };
 
-  const handleSubmint = (e) => {
+  const handleChangeDate = (value: any) => {
+    setExpense({
+      ...expense,
+      date: value.toDate().toLocaleDateString(),
+    });
+  };
+
+  const handleSubmint = (e: FormEvent) => {
     e.preventDefault();
-
-    const newExpense = {
-      source: source,
-      amount: amount,
-      date: new Date().toLocaleDateString(),
+    const newExpense: Expense = {
+      id: +new Date(),
+      source: expense.source,
+      amount: +expense.amount,
+      date: expense.date,
     };
     setExpenses([...expenses, newExpense]);
   };
 
   return (
     <>
-      <ExpenseForm
-        handleChangeSource={handleChangeSource}
-        handleChangeAmount={handleChangeAmount}
+      <Form
+        handleChangeDate={handleChangeDate}
+        handleChange={handleChange}
         handleSubmint={handleSubmint}
+        inputs={EXPENSE_INPUTS}
       />
 
-      <ul>
-        {expenses.map((expense) => {
-          return (
-            <li>
-              <p>{expense.source}</p>
-              <p>{expense.amount}</p>
-              <p>{expense.date}</p>
-            </li>
-          );
-        })}
-      </ul>
+      <ListItems items={expenses} />
     </>
   );
 }

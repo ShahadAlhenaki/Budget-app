@@ -1,61 +1,81 @@
-import React from 'react';
-import { useState } from "react"
-import { IncomeForm } from "./IncomeForm"
+import { ChangeEvent, FormEvent, useState } from "react";
+import { Dayjs } from "dayjs";
 
-type Income = {
-    source: string,
-    amount: number,
-    date: string
-  }
-  
-
-export function IncomeWrapper(){
-
-const [incomes, setIncomes] = useState<Income[]>([])
-const [source, setSource] = useState ('')
-const [amount, setAmount] = useState (0)
-// const [date, setDate] = useState (null)
-
-const handleChangeSource = (e) => {
-const value = e.target.value 
-setSource(value)
-}
-const handleChangeAmount = (e) => {
-  const value = e.target.value 
-  setAmount(value)
-  }
-
-const handleSubmint = (e) => {
-  e.preventDefault()
-
-const newIncome = {
-  source: source,
-  amount:amount,
-  date: new Date().toLocaleDateString()
-}
-setIncomes([...incomes, newIncome])
-}
+import { Form } from "./Form";
+import { ListItems } from "./ListItems";
 
 
-return(
-<>
-<IncomeForm 
-  handleChangeSource={handleChangeSource} 
-  handleChangeAmount={handleChangeAmount} 
-  handleSubmint={handleSubmint} />
+export type Income = {
+  id: number;
+  source: string;
+  amount: number;
+  date: string;
+};
 
-<ul>
+const INCOME_INPUTS = [
   {
-    incomes.map(income => {
-      return(
-        <li>
-         <p>{income.source}</p> 
-         <p>{income.amount}</p>
-         <p>{income.date}</p>
-        </li>
-      )
-    })}
-  </ul>
-</>
-)
+    name: "source",
+    id: "source",
+    label: "Income Source",
+  },
+  {
+    name: "amount",
+    id: "amount",
+    label: "Income Amount",
+  },
+];
+
+type IncomeWrapperProps = {
+  incomes: Income[];
+  setIncomes: (key: Income[]) => void;
+};
+
+export function IncomeWrapper({ incomes, setIncomes }: IncomeWrapperProps) {
+  //const [incomes, setIncomes] = useState<Income[]>([]);
+  const [income, setIncome] = useState<Income>({
+    id: +new Date(),
+    source: "",
+    amount: 0,
+    date: new Date().toLocaleDateString(),
+  });
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setIncome({
+      ...income,
+      [name]: value,
+    });
+  };
+
+  const handleChangeDate = (value: Dayjs | null) => {
+    if (value)
+      setIncome({
+        ...income,
+        date: value.toDate().toLocaleDateString(),
+      });
+  };
+
+  const handleSubmint = (e: FormEvent) => {
+    e.preventDefault();
+    const newIncome: Income = {
+      id: +new Date(),
+      source: income.source,
+      amount: +income.amount,
+      date: income.date,
+    };
+    setIncomes([...incomes, newIncome]);
+  };
+
+  return (
+    <>
+      <Form
+        handleChangeDate={handleChangeDate}
+        handleChange={handleChange}
+        handleSubmint={handleSubmint}
+        inputs={INCOME_INPUTS}
+      />
+
+      <ListItems items={incomes} />
+    </>
+  );
 }
