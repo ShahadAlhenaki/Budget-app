@@ -1,4 +1,5 @@
 import { ChangeEvent, FormEvent, useState } from "react";
+import { Dayjs } from "dayjs";
 
 import { Form } from "./Form";
 import { ListItems } from "./ListItems";
@@ -26,9 +27,14 @@ const EXPENSE_INPUTS = [
 type ExpenseWrapperProps = {
   expenses: Expense[];
   setExpenses: (key: Expense[]) => void;
+  handleDelete: (key: number) => void;
 };
 
-export function ExpenseWrapper({ expenses, setExpenses }: ExpenseWrapperProps) {
+export function ExpenseWrapper({
+  expenses,
+  setExpenses,
+  handleDelete,
+}: ExpenseWrapperProps) {
   const [expense, setExpense] = useState<Expense>({
     id: +new Date(),
     source: "",
@@ -44,11 +50,12 @@ export function ExpenseWrapper({ expenses, setExpenses }: ExpenseWrapperProps) {
     });
   };
 
-  const handleChangeDate = (value: any) => {
-    setExpense({
-      ...expense,
-      date: value.toDate().toLocaleDateString(),
-    });
+  const handleChangeDate = (value: Dayjs | null) => {
+    if (value)
+      setExpense({
+        ...expense,
+        date: value.toDate().toLocaleDateString(),
+      });
   };
 
   const handleSubmint = (e: FormEvent) => {
@@ -71,7 +78,7 @@ export function ExpenseWrapper({ expenses, setExpenses }: ExpenseWrapperProps) {
         inputs={EXPENSE_INPUTS}
       />
 
-      <ListItems items={expenses} />
+      <ListItems items={expenses} handleDelete={handleDelete} />
     </>
   );
 }

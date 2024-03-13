@@ -4,7 +4,6 @@ import { Dayjs } from "dayjs";
 import { Form } from "./Form";
 import { ListItems } from "./ListItems";
 
-
 export type Income = {
   id: number;
   source: string;
@@ -28,10 +27,14 @@ const INCOME_INPUTS = [
 type IncomeWrapperProps = {
   incomes: Income[];
   setIncomes: (key: Income[]) => void;
+  handleDelete: (key: number) => void;
 };
 
-export function IncomeWrapper({ incomes, setIncomes }: IncomeWrapperProps) {
-  //const [incomes, setIncomes] = useState<Income[]>([]);
+export function IncomeWrapper({
+  incomes,
+  setIncomes,
+  handleDelete,
+}: IncomeWrapperProps) {
   const [income, setIncome] = useState<Income>({
     id: +new Date(),
     source: "",
@@ -75,7 +78,7 @@ export function IncomeWrapper({ incomes, setIncomes }: IncomeWrapperProps) {
         inputs={INCOME_INPUTS}
       />
 
-      <ListItems items={incomes} />
+      <ListItems items={incomes} handleDelete={handleDelete} />
     </>
   );
 }
