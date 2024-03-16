@@ -1,55 +1,79 @@
-import React from "react";
-import { useState } from "react";
-import { TargetSavingForm } from "./TargetSavingForm";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Grid,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { ChangeEvent } from "react";
 
-type TargetSaving = {
-  source: string;
-  amount: number;
+type TargetSavingWrapperProps = {
+  setTargetSaving: (key: number) => void;
+  currentSaving: number;
+  targetSaving: number;
+  progress: number;
 };
 
-export function TargetSavingWrapper() {
-  const [TargetSavings, setTargetSavings] = useState<TargetSaving[]>([]);
-  const [source, setSource] = useState("");
-  const [amount, setAmount] = useState(0);
-
-  const handleChangeSource = (e) => {
-    const value = e.target.value;
-    setSource(value);
-  };
-  const handleChangeAmount = (e) => {
-    const value = e.target.value;
-    setAmount(value);
-  };
-
-  const handleSubmint = (e) => {
-    e.preventDefault();
-
-    const newTargetSaving = {
-      source: source,
-      amount: amount,
-      date: new Date().toLocaleDateString(),
-    };
-    setTargetSavings([...TargetSavings, newTargetSaving]);
+export function TargetSavingWrapper({
+  setTargetSaving,
+  currentSaving,
+  targetSaving,
+  progress,
+}: TargetSavingWrapperProps) {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { valueAsNumber } = e.target;
+    setTargetSaving(valueAsNumber);
   };
 
   return (
-    <>
-      <TargetSavingForm
-        handleChangeSource={handleChangeSource}
-        handleChangeAmount={handleChangeAmount}
-        handleSubmint={handleSubmint}
-      />
-
-      <ul>
-        {TargetSavings.map((TargetSaving) => {
-          return (
-            <li>
-              <p>{TargetSaving.source}</p>
-              <p>{TargetSaving.amount}</p>
-            </li>
-          );
-        })}
-      </ul>
-    </>
+    <div>
+      <form>
+        <Grid container>
+          <Grid item xs={12} marginBottom={2}>
+            <TextField
+              name="saving"
+              id="saving"
+              label="Set Target"
+              variant="outlined"
+              onChange={handleChange}
+              type="number"
+            />
+          </Grid>
+          <Button type="reset" variant="contained" style={{ margin: "0 auto" }}>
+            Reset
+          </Button>
+          <Grid item xs={12} marginBottom={2}>
+            <Typography variant="body1">
+              Current Saving {currentSaving}
+            </Typography>
+          </Grid>
+          <Grid item xs={12} marginBottom={2}>
+            <Typography>Target {targetSaving}</Typography>
+          </Grid>
+        </Grid>
+        <Box sx={{ position: "relative", display: "inline-flex" }}>
+          <CircularProgress variant="determinate" value={progress} />
+          <Box
+            sx={{
+              top: 0,
+              left: 0,
+              bottom: 0,
+              right: 0,
+              position: "absolute",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Typography
+              variant="caption"
+              component="div"
+              color="text.secondary"
+            >{`${Math.round(progress)}%`}</Typography>
+          </Box>
+        </Box>
+      </form>
+    </div>
   );
 }

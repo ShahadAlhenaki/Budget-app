@@ -50,7 +50,7 @@ export function Form({
         </Grid>
         <Grid item xs={12}>
           <Button color="success" variant="contained" type="submit">
-            Add Income
+            Add 
           </Button>
         </Grid>
       </Grid>
